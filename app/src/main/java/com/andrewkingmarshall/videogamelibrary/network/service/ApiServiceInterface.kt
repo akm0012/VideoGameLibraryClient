@@ -10,7 +10,7 @@ import retrofit2.http.Path
 interface ApiServiceInterface {
 
     companion object {
-        const val GAME_ID = "{gameId}"
+        const val GAME_ID = "gameId"
     }
 
     @GET("VideoGame/ids")
