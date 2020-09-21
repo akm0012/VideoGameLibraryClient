@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
         RxView.clicks(getGamesBySpecificReleaseYearButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesBySpecificReleaseYearClicked("2010")
+                viewModel.onGetGamesBySpecificReleaseYearClicked("2012")
             }
 
         RxView.clicks(getGamesInServerOrderButton)

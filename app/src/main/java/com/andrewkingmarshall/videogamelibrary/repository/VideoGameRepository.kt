@@ -17,7 +17,7 @@ class VideoGameRepository {
         Injector.obtain().inject(this)
     }
 
-    fun getAllVideoGames(): Single<List<VideoGameDto>> {
+    fun getAllVideoGames(): Observable<VideoGameDto> {
 
         // Todo: this could be cached for better performance
 
@@ -25,7 +25,6 @@ class VideoGameRepository {
             .subscribeOn(Schedulers.io())
             .flatMapIterable { it.gameIds }
             .flatMap { apiService.getVideoGame(it) }
-            .toList()
     }
 
     fun getAllVideoGameIds(): Observable<Int> {

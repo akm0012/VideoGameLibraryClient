@@ -2,14 +2,16 @@ package com.andrewkingmarshall.videogamelibrary.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.andrewkingmarshall.videogamelibrary.inject.Injector
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 import javax.inject.Inject
+
 
 class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -27,27 +29,63 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     fun onGetAllGamesClicked() {
         compositeDisposable.add(
             videoGameRepository.getAllVideoGames()
+                .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    games -> videoGameLiveData.value = games
+                .subscribe { games ->
+                    videoGameLiveData.value = games
                 }
         )
     }
 
     fun onGetMultiPlayerGamesClicked() {
-
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGames()
+                .filter { it.isMultiPlayer }
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { games ->
+                    videoGameLiveData.value = games
+                }
+        )
     }
 
     fun onGetGamesSortedAlphabeticallyClicked() {
-
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGames()
+                .toSortedList { g1, g2 -> g1.name.compareTo(g2.name) }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { games ->
+                    videoGameLiveData.value = games
+                }
+        )
     }
 
     fun onGetGamesBySpecificDeveloperClicked(developerName: String) {
-
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGames()
+                .filter { it.developerStudio == developerName }
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { games ->
+                    videoGameLiveData.value = games
+                }
+        )
     }
 
     fun onGetGamesBySpecificReleaseYearClicked(releaseYear: String) {
-
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGames()
+                .filter {
+                    val releaseDateTime: DateTime =
+                        DateTimeFormat.forPattern("MMMM dd, yyyy").parseDateTime(it.dateReleased)
+                    releaseDateTime.year == releaseYear.toInt()
+                }
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { games ->
+                    videoGameLiveData.value = games
+                }
+        )
     }
 
     fun onGetGamesInServerOrderClicked() {
@@ -56,8 +94,8 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                 .concatMapEager { videoGameRepository.getVideoGameDetails(it) }
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                        games -> videoGameLiveData.value = games
+                .subscribe { games ->
+                    videoGameLiveData.value = games
                 }
         )
     }
