@@ -2,19 +2,15 @@ package com.andrewkingmarshall.videogamelibrary.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
 import com.andrewkingmarshall.videogamelibrary.inject.Injector
-import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModel
 import com.jakewharton.rxbinding2.view.RxView
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -41,20 +37,56 @@ class MainActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        // Listen for button clicks with a 1 second delay so we don't spam the server
-        RxView.clicks(button)
-            .throttleFirst(1, TimeUnit.SECONDS)
-            .subscribe {
-                makeApiCall()
-            }
-    }
+        // Listen for the Game Data to change
+        viewModel.videoGameLiveData.observe(this, { gameList ->
+            Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
-    private fun makeApiCall() {
-
-        viewModel.getAllVideoGames().observe(this, {gameList ->
             gameList.forEach {
-                Log.i("GameTag", "Game: $it")
+                Log.i("GameTag", "$it")
             }
         })
+
+        // Listen for button clicks with a 1 second delay so we don't spam the server
+        RxView.clicks(getAllGamesButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetAllGamesClicked()
+            }
+
+        RxView.clicks(getMultiPlayerGamesButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetMultiPlayerGamesClicked()
+            }
+
+        RxView.clicks(getGamesSortedAlphaButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetGamesSortedAlphabeticallyClicked()
+            }
+
+        RxView.clicks(getGamesBySpecificDeveloperButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetGamesBySpecificDeveloperClicked("Nintendo")
+            }
+
+        RxView.clicks(getGamesBySpecificReleaseYearButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetGamesBySpecificReleaseYearClicked("2010")
+            }
+
+        RxView.clicks(getGamesInServerOrderButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetGamesInServerOrderClicked()
+            }
+
+        RxView.clicks(getGamesAndMediaInfoButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+                viewModel.onGetGamesAndMediaInfoClicked()
+            }
     }
 }

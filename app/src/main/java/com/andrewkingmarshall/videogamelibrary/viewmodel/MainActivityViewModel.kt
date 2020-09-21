@@ -18,14 +18,13 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     private val compositeDisposable = CompositeDisposable()
 
-    private val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
+    val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
 
     init {
         Injector.obtain().inject(this)
     }
 
-    fun getAllVideoGames() : LiveData<List<VideoGameDto>>{
-
+    fun onGetAllGamesClicked() {
         compositeDisposable.add(
             videoGameRepository.getAllVideoGames()
                 .observeOn(AndroidSchedulers.mainThread())
@@ -33,8 +32,38 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
                     games -> videoGameLiveData.value = games
                 }
         )
+    }
 
-        return videoGameLiveData
+    fun onGetMultiPlayerGamesClicked() {
+
+    }
+
+    fun onGetGamesSortedAlphabeticallyClicked() {
+
+    }
+
+    fun onGetGamesBySpecificDeveloperClicked(developerName: String) {
+
+    }
+
+    fun onGetGamesBySpecificReleaseYearClicked(releaseYear: String) {
+
+    }
+
+    fun onGetGamesInServerOrderClicked() {
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGameIds()
+                .concatMapEager { videoGameRepository.getVideoGameDetails(it) }
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                        games -> videoGameLiveData.value = games
+                }
+        )
+    }
+
+    fun onGetGamesAndMediaInfoClicked() {
+
     }
 
     override fun onCleared() {

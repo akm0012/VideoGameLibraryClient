@@ -11,13 +11,13 @@ import javax.inject.Inject
 class VideoGameRepository {
 
     @Inject
-    lateinit var apiService:ApiService
+    lateinit var apiService: ApiService
 
     init {
         Injector.obtain().inject(this)
     }
 
-    fun getAllVideoGames() : Single<List<VideoGameDto>> {
+    fun getAllVideoGames(): Single<List<VideoGameDto>> {
 
         // Todo: this could be cached for better performance
 
@@ -26,6 +26,23 @@ class VideoGameRepository {
             .flatMapIterable { it.gameIds }
             .flatMap { apiService.getVideoGame(it) }
             .toList()
+    }
+
+    fun getAllVideoGameIds(): Observable<Int> {
+
+        // Todo: this could be cached for better performance
+
+        return apiService.getVideoGameIds()
+            .subscribeOn(Schedulers.io())
+            .flatMapIterable { it.gameIds }
+    }
+
+    fun getVideoGameDetails(gameId: Int): Observable<VideoGameDto> {
+
+        // Todo: this could be cached for better performance
+
+        return apiService.getVideoGame(gameId)
+            .subscribeOn(Schedulers.io())
     }
 
 }
