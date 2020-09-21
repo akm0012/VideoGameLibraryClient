@@ -4,12 +4,16 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.andrewkingmarshall.videogamelibrary.inject.Injector
+import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.BiFunction
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import java.util.*
 import javax.inject.Inject
 
 
@@ -101,7 +105,20 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun onGetGamesAndMediaInfoClicked() {
-
+        compositeDisposable.add(videoGameRepository.getAllVideoGames()
+            .flatMap { gameDto ->
+                videoGameRepository.getVideoGameMediaInfo(gameDto.id)
+                    .map {
+                        gameDto.mediaInfo = it
+                        gameDto
+                    }
+            }
+            .toList()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { games ->
+                videoGameLiveData.value = games
+            }
+        )
     }
 
     override fun onCleared() {

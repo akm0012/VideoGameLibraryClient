@@ -1,6 +1,7 @@
 package com.andrewkingmarshall.videogamelibrary.repository
 
 import com.andrewkingmarshall.videogamelibrary.inject.Injector
+import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import io.reactivex.Observable
@@ -41,6 +42,23 @@ class VideoGameRepository {
         // Todo: this could be cached for better performance
 
         return apiService.getVideoGame(gameId)
+            .subscribeOn(Schedulers.io())
+    }
+
+    fun getAllVideoGamesMedia(): Observable<MediaDto> {
+
+        // Todo: this could be cached for better performance
+
+        return apiService.getVideoGameIds()
+            .subscribeOn(Schedulers.io())
+            .flatMapIterable { it.gameIds }
+            .flatMap { apiService.getVideoGameMedia(it) }
+    }
+
+    fun getVideoGameMediaInfo(gameId: Int): Observable<MediaDto> {
+        // Todo: this could be cached for better performance
+
+        return apiService.getVideoGameMedia(gameId)
             .subscribeOn(Schedulers.io())
     }
 

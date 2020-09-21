@@ -2,15 +2,11 @@ package com.andrewkingmarshall.videogamelibrary.network.dtos
 
 data class MediaDto(
 
-    val id: Int,
+    val mediaId: Int,
 
-    val name: String,
+    val gameId: Int,
 
-    val description: String,
+    val gamePosterUrl: String,
 
-    val isMultiPlayer: Boolean,
-
-    val dateReleased: String,
-
-    val developerStudio: String,
+    val gameTrailerUrl: String,
 )

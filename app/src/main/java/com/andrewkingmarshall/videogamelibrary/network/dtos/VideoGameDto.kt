@@ -13,4 +13,6 @@ data class VideoGameDto(
     val dateReleased: String,
 
     val developerStudio: String,
+
+    var mediaInfo: MediaDto?
 )
