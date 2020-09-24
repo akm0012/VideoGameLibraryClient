@@ -27,7 +27,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
 
     init {
-        Injector.obtain().inject(this)
+        Injector.obtain()?.inject(this)
     }
 
     fun onGetAllGamesClicked() {

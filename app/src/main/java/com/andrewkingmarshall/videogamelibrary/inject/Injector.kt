@@ -2,7 +2,6 @@ package com.andrewkingmarshall.videogamelibrary.inject
 
 import android.content.Context
 import com.andrewkingmarshall.videogamelibrary.VideoGameLibraryApplication
-import java.lang.IllegalStateException
 
 /**
  * This Injector is an "Object" so it should behave like a Singleton.
@@ -23,11 +22,11 @@ object Injector {
             .build()
     }
 
-    fun obtain() : AppComponent {
-        if (appComponent == null) {
-            throw IllegalStateException("Dagger was not set up correctly. Must call init(context).")
+    fun obtain() : AppComponent? {
+        return if (appComponent == null) {
+            null
         } else {
-            return appComponent as AppComponent
+            appComponent as AppComponent
         }
     }
 }

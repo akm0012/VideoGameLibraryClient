@@ -5,7 +5,6 @@ import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -15,7 +14,7 @@ class VideoGameRepository {
     lateinit var apiService: ApiService
 
     init {
-        Injector.obtain().inject(this)
+        Injector.obtain()?.inject(this)
     }
 
     fun getAllVideoGames(): Observable<VideoGameDto> {
