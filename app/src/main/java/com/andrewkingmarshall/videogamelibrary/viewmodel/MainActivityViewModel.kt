@@ -1,34 +1,23 @@
 package com.andrewkingmarshall.videogamelibrary.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
-import com.andrewkingmarshall.videogamelibrary.inject.Injector
-import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
+import androidx.lifecycle.ViewModel
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.functions.BiFunction
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
-import java.util.*
-import javax.inject.Inject
 
 
-class MainActivityViewModel(application: Application) : AndroidViewModel(application) {
-
-    @Inject
-    lateinit var videoGameRepository: VideoGameRepository
+class MainActivityViewModel @ViewModelInject constructor(
+    private val videoGameRepository: VideoGameRepository
+) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
 
     val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
-
-    init {
-        Injector.obtain().inject(this)
-    }
 
     fun onGetAllGamesClicked() {
         compositeDisposable.add(

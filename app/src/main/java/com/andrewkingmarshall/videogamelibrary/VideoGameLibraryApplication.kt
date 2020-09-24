@@ -1,19 +1,16 @@
 package com.andrewkingmarshall.videogamelibrary
 
 import android.app.Application
-import com.andrewkingmarshall.videogamelibrary.inject.Injector
+import dagger.hilt.android.HiltAndroidApp
 import net.danlew.android.joda.JodaTimeAndroid
 
+@HiltAndroidApp
 class VideoGameLibraryApplication  : Application() {
 
     override fun onCreate() {
         super.onCreate()
 
-        setUpDagger()
-    }
-
-    private fun setUpDagger() {
-        Injector.init(this)
+        setUpJodaTime()
     }
 
     private fun setUpJodaTime() {

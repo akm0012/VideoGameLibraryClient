@@ -7,14 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
-import com.andrewkingmarshall.videogamelibrary.inject.Injector
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModel
 import com.jakewharton.rxbinding2.view.RxView
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
+@AndroidEntryPoint
 @SuppressLint("CheckResult")
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +26,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Injector.obtain().inject(this)
 
         setContentView(R.layout.activity_main)
 
