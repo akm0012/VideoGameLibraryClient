@@ -8,15 +8,17 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(ApplicationComponent::class)
 class NetworkModule {
 
     @Provides
@@ -37,6 +39,7 @@ class NetworkModule {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(@ApplicationContext context: Context, httpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()

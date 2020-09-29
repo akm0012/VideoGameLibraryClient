@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'realm-android'
 
 
 android {
@@ -63,6 +64,9 @@ dependencies {
 
     // Joda Time
     implementation 'net.danlew:android.joda:2.10.1'
+
+    // Used in Logging
+    implementation 'com.jakewharton.timber:timber:4.7.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

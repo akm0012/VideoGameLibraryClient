@@ -1,15 +1,29 @@
 package com.andrewkingmarshall.videogamelibrary.repository
 
+import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
 import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
+import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class VideoGameRepository @Inject constructor(
     private val apiService: ApiService
 ) {
+
+    fun getAllVideoGamesSavedInRealm(realm: Realm): Flowable<List<VideoGame>> {
+
+        return realm.where(VideoGame::class.java)
+            .findAllAsync()
+            .asFlowable()
+            .filter { it.isLoaded }
+            .map { realm.copyFromRealm(it) }
+    }
 
     fun getAllVideoGames(): Observable<VideoGameDto> {
 

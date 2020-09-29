@@ -7,6 +7,26 @@
     tools:context=".ui.MainActivity">
 
     <Button
+        android:id="@+id/saveMockData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Mock Data To Realm"
+        app:layout_constraintBottom_toTopOf="@id/getAllGamesInRealmButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/getAllGamesInRealmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get All Games In Realm"
+        app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/saveMockData" />
+
+    <Button
         android:id="@+id/getAllGamesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,7 +34,7 @@
         app:layout_constraintBottom_toTopOf="@id/getMultiPlayerGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/getAllGamesInRealmButton" />
 
     <Button
         android:id="@+id/getMultiPlayerGamesButton"

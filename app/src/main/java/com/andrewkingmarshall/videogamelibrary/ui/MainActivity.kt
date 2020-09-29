@@ -46,7 +46,23 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        viewModel.videoGameRealmLiveData.observe(this, { gameList ->
+            Toast.makeText(this, "New Realm Game List in LogCat!", Toast.LENGTH_SHORT).show()
+
+            gameList.forEach {
+                Log.i("GameTag", "$it")
+            }
+        })
+
+        saveMockData.setOnClickListener { viewModel.onSaveMockDataButtonPressed() }
+
         // Listen for button clicks with a 1 second delay so we don't spam the server
+        RxView.clicks(getAllGamesInRealmButton)
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .subscribe {
+//                viewModel.onGetAllGamesInRealmClicked()
+            }
+
         RxView.clicks(getAllGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
