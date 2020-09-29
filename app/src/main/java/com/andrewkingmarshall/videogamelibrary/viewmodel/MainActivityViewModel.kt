@@ -61,19 +61,16 @@ class MainActivityViewModel @ViewModelInject constructor(
         videoGameRepository.refreshGameLibrary()
     }
 
+    // region Old Work
     fun onGetAllGamesClicked() {
-
-        var games = realm.copyFromRealm(realm.where(VideoGame::class.java).findAllAsync())
-        videoGameRealmLiveData.value = games
-
-//        compositeDisposable.add(
-//            videoGameRepository.getAllVideoGames()
-//                .toList()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe { games ->
-//                    videoGameLiveData.value = games
-//                }
-//        )
+        compositeDisposable.add(
+            videoGameRepository.getAllVideoGames()
+                .toList()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { games ->
+                    videoGameLiveData.value = games
+                }
+        )
     }
 
     fun onGetMultiPlayerGamesClicked() {
@@ -155,6 +152,7 @@ class MainActivityViewModel @ViewModelInject constructor(
             }
         )
     }
+    //endregion
 
     override fun onCleared() {
         super.onCleared()

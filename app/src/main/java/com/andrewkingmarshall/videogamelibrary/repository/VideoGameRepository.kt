@@ -53,6 +53,7 @@ class VideoGameRepository @Inject constructor(
             )
     }
 
+    // region Old work
 
     fun getAllVideoGames(): Observable<VideoGameDto> {
 
@@ -98,4 +99,5 @@ class VideoGameRepository @Inject constructor(
             .subscribeOn(Schedulers.io())
     }
 
+    //endregion
 }
