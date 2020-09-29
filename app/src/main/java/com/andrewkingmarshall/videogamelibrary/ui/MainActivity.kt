@@ -49,6 +49,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.videoGameRealmLiveData.observe(this, { gameList ->
             Toast.makeText(this, "New Realm Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
+            if (gameList == null || gameList.isEmpty()) {
+                Log.i("GameTag", "[]")
+            }
+
             gameList.forEach {
                 Log.i("GameTag", "$it")
             }

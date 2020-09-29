@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.andrewkingmarshall.videogamelibrary.database.clearRealm
 import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
-import com.andrewkingmarshall.videogamelibrary.extensions.save
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -63,14 +62,18 @@ class MainActivityViewModel @ViewModelInject constructor(
     }
 
     fun onGetAllGamesClicked() {
-        compositeDisposable.add(
-            videoGameRepository.getAllVideoGames()
-                .toList()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { games ->
-                    videoGameLiveData.value = games
-                }
-        )
+
+        var games = realm.copyFromRealm(realm.where(VideoGame::class.java).findAllAsync())
+        videoGameRealmLiveData.value = games
+
+//        compositeDisposable.add(
+//            videoGameRepository.getAllVideoGames()
+//                .toList()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe { games ->
+//                    videoGameLiveData.value = games
+//                }
+//        )
     }
 
     fun onGetMultiPlayerGamesClicked() {
