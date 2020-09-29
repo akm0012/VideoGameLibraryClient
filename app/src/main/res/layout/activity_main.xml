@@ -7,24 +7,24 @@
     tools:context=".ui.MainActivity">
 
     <Button
-        android:id="@+id/saveMockData"
+        android:id="@+id/clearRealmButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Save Mock Data To Realm"
-        app:layout_constraintBottom_toTopOf="@id/getAllGamesInRealmButton"
+        android:text="Clear Realm"
+        app:layout_constraintBottom_toTopOf="@id/updateGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/getAllGamesInRealmButton"
+        android:id="@+id/updateGamesButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get All Games In Realm"
+        android:text="Update Game Data"
         app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/saveMockData" />
+        app:layout_constraintTop_toBottomOf="@id/clearRealmButton" />
 
     <Button
         android:id="@+id/getAllGamesButton"
@@ -34,7 +34,7 @@
         app:layout_constraintBottom_toTopOf="@id/getMultiPlayerGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/getAllGamesInRealmButton" />
+        app:layout_constraintTop_toBottomOf="@id/updateGamesButton" />
 
     <Button
         android:id="@+id/getMultiPlayerGamesButton"

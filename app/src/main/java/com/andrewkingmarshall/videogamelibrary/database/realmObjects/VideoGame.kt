@@ -28,7 +28,7 @@ open class VideoGame(
 
     constructor(
         videoGameDto: VideoGameDto,
-        mediaDto: MediaDto
+        mediaDto: MediaDto? = videoGameDto.mediaInfo
     ) : this() {
 
         id = videoGameDto.id
@@ -37,8 +37,15 @@ open class VideoGame(
         isMultiPlayer = videoGameDto.isMultiPlayer
         dateReleased = videoGameDto.dateReleased
         developerStudio = videoGameDto.developerStudio
-        gamePosterUrl = mediaDto.gamePosterUrl
-        gameTrailerUrl = mediaDto.gameTrailerUrl
+
+        // Use the Media DTO if you there, otherwise, use the data in the videoGameDto
+        if (mediaDto != null) {
+            gamePosterUrl = mediaDto.gamePosterUrl
+            gameTrailerUrl = mediaDto.gameTrailerUrl
+        } else {
+            gamePosterUrl = videoGameDto.mediaInfo?.gamePosterUrl ?: ""
+            gameTrailerUrl = videoGameDto.mediaInfo?.gameTrailerUrl ?: ""
+        }
     }
 
     override fun toString(): String {

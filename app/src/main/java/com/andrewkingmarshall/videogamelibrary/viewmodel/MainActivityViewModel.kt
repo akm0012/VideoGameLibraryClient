@@ -3,6 +3,7 @@ package com.andrewkingmarshall.videogamelibrary.viewmodel
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.andrewkingmarshall.videogamelibrary.database.clearRealm
 import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
 import com.andrewkingmarshall.videogamelibrary.extensions.save
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
@@ -29,20 +30,22 @@ class MainActivityViewModel @ViewModelInject constructor(
         initGameLiveData()
     }
 
-    fun onSaveMockDataButtonPressed() {
+    fun clearRealmClicked() {
 
-        val mockGame = VideoGame(
-            0,
-            "A Name : " + (1..100).shuffled().first(),
-            "A Description : " + (1..100).shuffled().first(),
-            isMultiPlayer = ((1..100).shuffled().first() % 2 == 0),
-            "July 17, 1990",
-            "A Studio : " + (1..100).shuffled().first(),
-            "www.poster.url",
-            "www.trailer.com"
-        )
+        clearRealm()
 
-        mockGame.save()
+//        val mockGame = VideoGame(
+//            0,
+//            "A Name : " + (1..100).shuffled().first(),
+//            "A Description : " + (1..100).shuffled().first(),
+//            isMultiPlayer = ((1..100).shuffled().first() % 2 == 0),
+//            "July 17, 1990",
+//            "A Studio : " + (1..100).shuffled().first(),
+//            "www.poster.url",
+//            "www.trailer.com"
+//        )
+//
+//        mockGame.save()
     }
 
     private fun initGameLiveData() {
@@ -53,6 +56,10 @@ class MainActivityViewModel @ViewModelInject constructor(
                     videoGameRealmLiveData.value = games
                 }
         )
+    }
+
+    fun onUpdateGameButtonClicked() {
+        videoGameRepository.refreshGameLibrary()
     }
 
     fun onGetAllGamesClicked() {

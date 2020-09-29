@@ -1,8 +1,10 @@
 package com.andrewkingmarshall.videogamelibrary.database
 
 import android.app.Application
+import io.realm.DynamicRealm
 import io.realm.Realm
 import io.realm.RealmConfiguration
+import timber.log.Timber
 
 const val REALM_NAME = "videogamelibrary.realm"
 
@@ -22,3 +24,16 @@ fun getRealmConfiguration(): RealmConfiguration {
 
     return realmBuilder.build()
 }
+
+fun clearRealm() {
+    Timber.d("Clearing Realm...")
+    val defaultConfiguration = Realm.getDefaultConfiguration()
+    defaultConfiguration?.let {
+        DynamicRealm.getInstance(it).run {
+            executeTransaction { deleteAll() }
+            close()
+        }
+    }
+    Timber.d("Realm cleared.")
+}
+

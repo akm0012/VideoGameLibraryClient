@@ -54,13 +54,13 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        saveMockData.setOnClickListener { viewModel.onSaveMockDataButtonPressed() }
+        clearRealmButton.setOnClickListener { viewModel.clearRealmClicked() }
 
         // Listen for button clicks with a 1 second delay so we don't spam the server
-        RxView.clicks(getAllGamesInRealmButton)
+        RxView.clicks(updateGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-//                viewModel.onGetAllGamesInRealmClicked()
+                viewModel.onUpdateGameButtonClicked()
             }
 
         RxView.clicks(getAllGamesButton)
