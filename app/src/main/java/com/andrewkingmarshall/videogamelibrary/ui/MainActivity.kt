@@ -7,11 +7,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
+import com.andrewkingmarshall.videogamelibrary.extensions.toast
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModel
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -37,12 +39,21 @@ class MainActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
+        // Listen for Errors
+        viewModel.showError.observe(this, {
+            it.toast(this)
+        })
+
         // Listen for the Game Data to change
         viewModel.videoGameLiveData.observe(this, { gameList ->
             Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
+            if (gameList == null || gameList.isEmpty()) {
+                Timber.tag("GameTag").i("[]")
+            }
+
             gameList.forEach {
-                Log.i("GameTag", "$it")
+                Timber.tag("GameTag").i("$it")
             }
         })
 
@@ -50,11 +61,11 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(this, "New Realm Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
             if (gameList == null || gameList.isEmpty()) {
-                Log.i("GameTag", "[]")
+                Timber.tag("GameTag").i("[]")
             }
 
             gameList.forEach {
-                Log.i("GameTag", "$it")
+                Timber.tag("GameTag").i("$it")
             }
         })
 

@@ -56,7 +56,7 @@ fun List<RealmObject>.save() {
 /**
  * Saves a Realm Object Asynchronously.
  */
-fun RealmObject.saveAsync(realmListener: RealmListener?) {
+fun RealmObject.saveAsync(realmListener: RealmListener? = null) {
     val realmOuter = Realm.getDefaultInstance()
 
     realmOuter.executeTransactionAsync({
@@ -75,19 +75,38 @@ fun RealmObject.saveAsync(realmListener: RealmListener?) {
     realmOuter.close()
 }
 
-// Todo: test this
-fun <T : RealmObject> saveRx(realmObject: T): Observable<T> {
+fun List<RealmObject>.saveAsync(realmListener: RealmListener? = null) {
+    val realmOuter = Realm.getDefaultInstance()
+
+    realmOuter.executeTransactionAsync({
+        it.insertOrUpdate(this)
+    }, {
+        // On Success
+        Timber.d("${this.javaClass.simpleName} was saved successfully!")
+        realmListener?.transactionCompleted()
+
+    }, {
+        // On Error
+        Timber.e(it, "There was an error while saving ${this.javaClass.simpleName}")
+        realmListener?.errorOccurred(it)
+    })
+
+    realmOuter.close()
+}
+
+// Todo: This does not really work
+fun <T : RealmObject> T.saveRx(): Observable<T> {
     return Observable.fromCallable {
-        realmObject.save()
-        realmObject
+        this.save()
+        this
     }.subscribeOn(Schedulers.io())
 }
 
-// Todo: test this
-fun <T : RealmObject> saveRx(realmObject: List<T>): Observable<List<T>> {
+// Todo: This does not really work
+fun <T : List<RealmObject>> T.saveRx(): Observable<T> {
     return Observable.fromCallable {
-        realmObject.save()
-        realmObject
+        this.save()
+        this
     }.subscribeOn(Schedulers.io())
 }
 

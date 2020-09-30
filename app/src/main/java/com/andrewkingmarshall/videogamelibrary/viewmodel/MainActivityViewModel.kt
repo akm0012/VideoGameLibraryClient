@@ -7,6 +7,7 @@ import com.andrewkingmarshall.videogamelibrary.database.clearRealm
 import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
+import com.andrewkingmarshall.videogamelibrary.util.SingleLiveEvent
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
@@ -24,6 +25,8 @@ class MainActivityViewModel @ViewModelInject constructor(
     val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
 
     val videoGameRealmLiveData = MutableLiveData<List<VideoGame>>()
+
+    val showError = SingleLiveEvent<String>()
 
     init {
         initGameLiveData()
@@ -47,9 +50,16 @@ class MainActivityViewModel @ViewModelInject constructor(
 //        mockGame.save()
     }
 
+    private val errorListener = object :
+        VideoGameRepository.ErrorListener {
+        override fun onError(e: Throwable) {
+            showError.value = e.localizedMessage
+        }
+    }
+
     private fun initGameLiveData() {
         compositeDisposable.add(
-            videoGameRepository.getAllVideoGamesSavedInRealm(realm)
+            videoGameRepository.getAllVideoGamesSavedInRealm(realm, errorListener)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { games ->
                     videoGameRealmLiveData.value = games
@@ -58,7 +68,7 @@ class MainActivityViewModel @ViewModelInject constructor(
     }
 
     fun onUpdateGameButtonClicked() {
-        videoGameRepository.refreshGameLibrary()
+        videoGameRepository.refreshGameLibrary(errorListener)
     }
 
     // region Old Work
