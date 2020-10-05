@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">VideoGameLibrary</string>
 
-    <string name="base_endpoint" translatable="false">https://ec2b9462819b.ngrok.io</string>
+    <string name="base_endpoint" translatable="false">https://201bcfa5c38d.ngrok.io</string>
 </resources>

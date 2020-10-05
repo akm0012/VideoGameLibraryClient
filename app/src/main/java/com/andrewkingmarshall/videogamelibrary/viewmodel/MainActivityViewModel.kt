@@ -24,6 +24,7 @@ class MainActivityViewModel @ViewModelInject constructor(
 
     val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
 
+    // todo: VideoGame would map into a Domain Model. To break the layer: api/data / domainModel
     val videoGameRealmLiveData = MutableLiveData<List<VideoGame>>()
 
     val showError = SingleLiveEvent<String>()
@@ -33,27 +34,14 @@ class MainActivityViewModel @ViewModelInject constructor(
     }
 
     fun clearRealmClicked() {
-
         clearRealm()
-
-//        val mockGame = VideoGame(
-//            0,
-//            "A Name : " + (1..100).shuffled().first(),
-//            "A Description : " + (1..100).shuffled().first(),
-//            isMultiPlayer = ((1..100).shuffled().first() % 2 == 0),
-//            "July 17, 1990",
-//            "A Studio : " + (1..100).shuffled().first(),
-//            "www.poster.url",
-//            "www.trailer.com"
-//        )
-//
-//        mockGame.save()
     }
 
     private val errorListener = object :
         VideoGameRepository.ErrorListener {
         override fun onError(e: Throwable) {
-            showError.value = e.localizedMessage
+            // postValue lets you call this from a background thread
+            showError.postValue(e.localizedMessage)
         }
     }
 

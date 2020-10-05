@@ -20,6 +20,7 @@ import javax.inject.Singleton
 @Singleton
 class VideoGameRepository @Inject constructor(
     private val apiService: ApiService
+    // Todo: Pass in observable property to refresh data, then you can trottle it so you only get new api data every 5 min
 ) {
 
     interface ErrorListener {
@@ -33,6 +34,9 @@ class VideoGameRepository @Inject constructor(
 
 //        refreshGameLibrary(errorListener)
 
+        // todo create data wrapper object
+        // todo: Find a way to combine the data stream from refreshGameLibrary so you could emit errors here
+
         return realm.where(VideoGame::class.java)
             .sort("id")
             .findAllAsync()
@@ -44,8 +48,11 @@ class VideoGameRepository @Inject constructor(
     @SuppressLint("CheckResult")
     fun refreshGameLibrary(errorListener: ErrorListener? = null) {
 
+        // Todo: could use zip to get the VideoGameMedia at the same time: inputs: Map of Id to VideoGame and Map of Id to Media
+
+        // Use HashMap with gameId as the key
+
         apiService.getVideoGameIds() // Get the Ids of all the games
-            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
             .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
             .flatMap { apiService.getVideoGame(it) } // Get all the Video Game Dtos for every ID
             .flatMap { gameDto ->
@@ -58,7 +65,7 @@ class VideoGameRepository @Inject constructor(
             .map { completeGameDto -> VideoGame(completeGameDto) } // Create a Realm "VideoGame" from the complete Game Dto
             .toList() // Turn the marbles into a List
             .map { it.save() } // Save the Video Games to Realm
-            .observeOn(AndroidSchedulers.mainThread()) // Observe the results on the Main Thread
+            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
             .subscribe(
                 { Timber.d("Video Games refreshed!") }, // Log when things work
                 { error -> // Run this code when there are any errors
