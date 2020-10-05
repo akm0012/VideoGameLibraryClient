@@ -8,6 +8,7 @@ import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameRepository
 import com.andrewkingmarshall.videogamelibrary.util.SingleLiveEvent
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.realm.Realm
@@ -17,7 +18,8 @@ import org.joda.time.format.DateTimeFormat
 
 class MainActivityViewModel @ViewModelInject constructor(
     private val videoGameRepository: VideoGameRepository,
-    private val realm: Realm
+    private val realm: Realm,
+    private val refreshEmitter: Observable<Boolean>
 ) : ViewModel() {
 
     private val compositeDisposable = CompositeDisposable()
@@ -30,7 +32,8 @@ class MainActivityViewModel @ViewModelInject constructor(
     val showError = SingleLiveEvent<String>()
 
     init {
-        initGameLiveData()
+//        initGameLiveData()
+        refreshEmitter.
     }
 
     fun clearRealmClicked() {
@@ -45,12 +48,22 @@ class MainActivityViewModel @ViewModelInject constructor(
         }
     }
 
+        // todo look into Subjects and Relays for
+
     private fun initGameLiveData() {
         compositeDisposable.add(
-            videoGameRepository.getAllVideoGamesSavedInRealm(realm, errorListener)
+            videoGameRepository.videoGameEmitter
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { games ->
-                    videoGameRealmLiveData.value = games
+                .subscribe { gameDomainModel ->
+                    when(gameDomainModel) {
+                        is VideoGameRepository.VideoGameDomainObject.Success -> {
+                            videoGameRealmLiveData.value = gameDomainModel.games
+                        }
+                        is VideoGameRepository.VideoGameDomainObject.Error -> {
+                            showError.value = gameDomainModel.error.localizedMessage
+                        }
+                    }
+//                    videoGameRealmLiveData.value
                 }
         )
     }
