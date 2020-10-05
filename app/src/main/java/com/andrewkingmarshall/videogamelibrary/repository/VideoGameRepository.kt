@@ -56,19 +56,52 @@ class VideoGameRepository @Inject constructor(
 
         // Use HashMap with gameId as the key
 
-
-
-
-
+//        val videoGameDtoMap = HashMap<Int, VideoGameDto>()
+//        val videoGameMediaDtoMap = HashMap<Int, MediaDto>()
+//
+//        apiService.getVideoGameIds()
+//            .flatMapIterable { it.gameIds }
+//            .flatMap { videoGameId ->
+//                apiService.getVideoGame(videoGameId)
+//                    .map { gameDto -> videoGameDtoMap.put(videoGameId, gameDto) }
+//            }
+//            .flatMap { videoGameId ->
+//                val gameId = videoGameId.id
+//                apiService.getVideoGameMedia(gameId)
+//                    .map { mediaDto -> videoGameMediaDtoMap.put(gameId, mediaDto) }
+//            }
+//            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
+//            .subscribe(
+//                {
+//                    val videoGameList = ArrayList<VideoGame>()
+//                    for (gameDto in videoGameDtoMap.entries) {
+//                        videoGameList.add(VideoGame(gameDto.value, videoGameMediaDtoMap[gameDto.value.id]))
+//                    }
+//                    videoGameList.save()
+//
+//                    Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis")
+//                },
+//                { error -> // Run this code when there are any errors
+//                    run {
+//                        Timber.e(error, "Opps!")
+//                        errorListener?.onError(error)
+//                    }
+//                }
+//            )
 
 
         apiService.getVideoGameIds() // Get the Ids of all the games
             .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
             .flatMap {
                 // Get both the VideoGameDto and the MediaDto at the same time, and then zip the result
-                return@flatMap Observable.zip(apiService.getVideoGame(it), apiService.getVideoGameMedia(it),
+                return@flatMap Observable.zip(
+                    apiService.getVideoGame(it),
+                    apiService.getVideoGameMedia(it),
                     BiFunction { gameDto, mediaDto ->
-                        return@BiFunction VideoGame(gameDto, mediaDto) // Create a VideoGame object with both the Game and Media Dto
+                        return@BiFunction VideoGame(
+                            gameDto,
+                            mediaDto
+                        ) // Create a VideoGame object with both the Game and Media Dto
                     })
             }
             .toList() // Turn marbles into a list
