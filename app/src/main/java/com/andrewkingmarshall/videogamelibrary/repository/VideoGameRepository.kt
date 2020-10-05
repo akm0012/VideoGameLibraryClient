@@ -52,44 +52,6 @@ class VideoGameRepository @Inject constructor(
         val updateStartTime = System.currentTimeMillis()
         Timber.i("Starting to refresh data.")
 
-        // Todo: could use zip to get the VideoGameMedia at the same time: inputs: Map of Id to VideoGame and Map of Id to Media
-
-        // Use HashMap with gameId as the key
-
-//        val videoGameDtoMap = HashMap<Int, VideoGameDto>()
-//        val videoGameMediaDtoMap = HashMap<Int, MediaDto>()
-//
-//        apiService.getVideoGameIds()
-//            .flatMapIterable { it.gameIds }
-//            .flatMap { videoGameId ->
-//                apiService.getVideoGame(videoGameId)
-//                    .map { gameDto -> videoGameDtoMap.put(videoGameId, gameDto) }
-//            }
-//            .flatMap { videoGameId ->
-//                val gameId = videoGameId.id
-//                apiService.getVideoGameMedia(gameId)
-//                    .map { mediaDto -> videoGameMediaDtoMap.put(gameId, mediaDto) }
-//            }
-//            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
-//            .subscribe(
-//                {
-//                    val videoGameList = ArrayList<VideoGame>()
-//                    for (gameDto in videoGameDtoMap.entries) {
-//                        videoGameList.add(VideoGame(gameDto.value, videoGameMediaDtoMap[gameDto.value.id]))
-//                    }
-//                    videoGameList.save()
-//
-//                    Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis")
-//                },
-//                { error -> // Run this code when there are any errors
-//                    run {
-//                        Timber.e(error, "Opps!")
-//                        errorListener?.onError(error)
-//                    }
-//                }
-//            )
-
-
         apiService.getVideoGameIds() // Get the Ids of all the games
             .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
             .flatMap {
@@ -116,31 +78,6 @@ class VideoGameRepository @Inject constructor(
                     }
                 }
             )
-
-//        apiService.getVideoGameIds() // Get the Ids of all the games
-//            .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
-//            .flatMap { apiService.getVideoGame(it) } // Get all the Video Game Dtos for every ID
-//            .flatMap { gameDto ->
-//                apiService.getVideoGameMedia(gameDto.id) // Get the Media for the GameDto
-//                    .map {
-//                        gameDto.mediaInfo =
-//                            it // Add the Media info to the Game Dto. The Game Dto now has all the info
-//                        gameDto
-//                    }
-//            }
-//            .map { completeGameDto -> VideoGame(completeGameDto) } // Create a Realm "VideoGame" from the complete Game Dto
-//            .toList() // Turn the marbles into a List
-//            .map { it.save() } // Save the Video Games to Realm
-//            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
-//            .subscribe(
-//                { Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis") }, // Log when things work
-//                { error -> // Run this code when there are any errors
-//                    run {
-//                        Timber.e(error, "Opps!")
-//                        errorListener?.onError(error)
-//                    }
-//                }
-//            )
     }
 
     // region Old work
