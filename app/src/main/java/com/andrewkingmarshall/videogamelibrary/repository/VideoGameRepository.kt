@@ -11,6 +11,7 @@ import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
 import io.realm.Realm
 import timber.log.Timber
@@ -48,26 +49,33 @@ class VideoGameRepository @Inject constructor(
     @SuppressLint("CheckResult")
     fun refreshGameLibrary(errorListener: ErrorListener? = null) {
 
+        val updateStartTime = System.currentTimeMillis()
+        Timber.i("Starting to refresh data.")
+
         // Todo: could use zip to get the VideoGameMedia at the same time: inputs: Map of Id to VideoGame and Map of Id to Media
 
         // Use HashMap with gameId as the key
 
+
+
+
+
+
+
         apiService.getVideoGameIds() // Get the Ids of all the games
             .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
-            .flatMap { apiService.getVideoGame(it) } // Get all the Video Game Dtos for every ID
-            .flatMap { gameDto ->
-                apiService.getVideoGameMedia(gameDto.id) // Get the Media for the GameDto
-                    .map {
-                        gameDto.mediaInfo = it // Add the Media info to the Game Dto. The Game Dto now has all the info
-                        gameDto
-                    }
+            .flatMap {
+                // Get both the VideoGameDto and the MediaDto at the same time, and then zip the result
+                return@flatMap Observable.zip(apiService.getVideoGame(it), apiService.getVideoGameMedia(it),
+                    BiFunction { gameDto, mediaDto ->
+                        return@BiFunction VideoGame(gameDto, mediaDto) // Create a VideoGame object with both the Game and Media Dto
+                    })
             }
-            .map { completeGameDto -> VideoGame(completeGameDto) } // Create a Realm "VideoGame" from the complete Game Dto
-            .toList() // Turn the marbles into a List
-            .map { it.save() } // Save the Video Games to Realm
+            .toList() // Turn marbles into a list
+            .map { it.save() } // Save Video Games to Realm
             .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
             .subscribe(
-                { Timber.d("Video Games refreshed!") }, // Log when things work
+                { Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis") }, // Log when things work
                 { error -> // Run this code when there are any errors
                     run {
                         Timber.e(error, "Opps!")
@@ -75,6 +83,31 @@ class VideoGameRepository @Inject constructor(
                     }
                 }
             )
+
+//        apiService.getVideoGameIds() // Get the Ids of all the games
+//            .flatMapIterable { it.gameIds } // Turn the marbles into ints representing the Game Ids
+//            .flatMap { apiService.getVideoGame(it) } // Get all the Video Game Dtos for every ID
+//            .flatMap { gameDto ->
+//                apiService.getVideoGameMedia(gameDto.id) // Get the Media for the GameDto
+//                    .map {
+//                        gameDto.mediaInfo =
+//                            it // Add the Media info to the Game Dto. The Game Dto now has all the info
+//                        gameDto
+//                    }
+//            }
+//            .map { completeGameDto -> VideoGame(completeGameDto) } // Create a Realm "VideoGame" from the complete Game Dto
+//            .toList() // Turn the marbles into a List
+//            .map { it.save() } // Save the Video Games to Realm
+//            .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
+//            .subscribe(
+//                { Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis") }, // Log when things work
+//                { error -> // Run this code when there are any errors
+//                    run {
+//                        Timber.e(error, "Opps!")
+//                        errorListener?.onError(error)
+//                    }
+//                }
+//            )
     }
 
     // region Old work
