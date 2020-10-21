@@ -39,11 +39,6 @@ class MainActivity : AppCompatActivity() {
         viewModel =
             ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        // Listen for Errors
-        viewModel.showError.observe(this, {
-            it.toast(this)
-        })
-
         // Listen for the Game Data to change
         viewModel.videoGameLiveData.observe(this, { gameList ->
             Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
@@ -56,27 +51,6 @@ class MainActivity : AppCompatActivity() {
                 Timber.tag("GameTag").i("$it")
             }
         })
-
-        viewModel.videoGameRealmLiveData.observe(this, { gameList ->
-            Toast.makeText(this, "New Realm Game List in LogCat!", Toast.LENGTH_SHORT).show()
-
-            if (gameList == null || gameList.isEmpty()) {
-                Timber.tag("GameTag").i("[]")
-            }
-
-            gameList.forEach {
-                Timber.tag("GameTag").i("$it")
-            }
-        })
-
-        clearRealmButton.setOnClickListener { viewModel.clearRealmClicked() }
-
-        // Listen for button clicks with a 1 second delay so we don't spam the server
-        RxView.clicks(updateGamesButton)
-            .throttleFirst(1, TimeUnit.SECONDS)
-            .subscribe {
-                viewModel.onUpdateGameButtonClicked()
-            }
 
         RxView.clicks(getAllGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)

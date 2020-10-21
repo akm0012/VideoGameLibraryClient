@@ -24,48 +24,13 @@ class MainActivityViewModel @ViewModelInject constructor(
 
     val videoGameLiveData = MutableLiveData<List<VideoGameDto>>()
 
-    // todo: VideoGame would map into a Domain Model. To break the layer: api/data / domainModel
-    val videoGameRealmLiveData = MutableLiveData<List<VideoGame>>()
-
-    val showError = SingleLiveEvent<String>()
-
-    init {
-        initGameLiveData()
-    }
-
-    fun clearRealmClicked() {
-        clearRealm()
-    }
-
-    private val errorListener = object :
-        VideoGameRepository.ErrorListener {
-        override fun onError(e: Throwable) {
-            // postValue lets you call this from a background thread
-            showError.postValue(e.localizedMessage)
-        }
-    }
-
-    private fun initGameLiveData() {
-        compositeDisposable.add(
-            videoGameRepository.getAllVideoGamesSavedInRealm(realm, errorListener)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { games ->
-                    videoGameRealmLiveData.value = games
-                }
-        )
-    }
-
-    fun onUpdateGameButtonClicked() {
-        videoGameRepository.refreshGameLibrary(errorListener)
-    }
-
-    // region Old Work
     fun onGetAllGamesClicked() {
         compositeDisposable.add(
             videoGameRepository.getAllVideoGames()
                 .toList()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { games ->
+                    // todo show postValue with "observeOn" commented
                     videoGameLiveData.value = games
                 }
         )
@@ -150,7 +115,6 @@ class MainActivityViewModel @ViewModelInject constructor(
             }
         )
     }
-    //endregion
 
     override fun onCleared() {
         super.onCleared()

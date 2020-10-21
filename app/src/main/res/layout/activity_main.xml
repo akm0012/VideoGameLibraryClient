@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Clear Realm"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@id/updateGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,6 +20,7 @@
     <Button
         android:id="@+id/updateGamesButton"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:text="Update Game Data"
         app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
