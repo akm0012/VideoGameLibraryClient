@@ -52,6 +52,19 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+        // Listen for Realm Game Data to change
+        viewModel.videoGameRealmLiveData.observe(this, { gameList ->
+            Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
+
+            if (gameList == null || gameList.isEmpty()) {
+                Timber.tag("GameTag").i("[]")
+            }
+
+            gameList.forEach {
+                Timber.tag("GameTag").i("$it")
+            }
+        })
+
         RxView.clicks(getAllGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
