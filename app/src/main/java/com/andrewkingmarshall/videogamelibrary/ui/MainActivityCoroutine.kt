@@ -15,7 +15,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivityCoroutine : AppCompatActivity() {
 
-    val viewModel by lazy { ViewModelProvider(this).get(MainActivityCoroutineViewModel::class.java) }
+    private val viewModel by lazy { ViewModelProvider(this).get(MainActivityCoroutineViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,8 @@ class MainActivityCoroutine : AppCompatActivity() {
                 Timber.tag("GameTag").i("$it")
             }
 
-            Timber.tag("GameTag").d("Time taken: ${System.currentTimeMillis() - viewModel.networkCallStartTime} ms")
+            Timber.tag("GameTag")
+                .d("Time taken: ${System.currentTimeMillis() - viewModel.networkCallStartTime} ms")
         })
 
         getAllGamesParallelButton.setOnClickListener { viewModel.onGetAllGamesOnParallelThreadClicked() }
@@ -44,7 +45,10 @@ class MainActivityCoroutine : AppCompatActivity() {
         getGamesBySpecificDeveloperButton.setOnClickListener { viewModel.onGetGamesBySpecificDeveloperClicked() }
         getGamesBySpecificReleaseYearButton.setOnClickListener { viewModel.onGetGamesBySpecificReleaseYearClicked() }
         getGamesInServerOrderButton.setOnClickListener { viewModel.onGetGamesInServerOrderClicked() }
-        getGamesAndMediaInfoButton.setOnClickListener { viewModel.onGetGamesAndMediaInfoClicked() }
+        getGamesAndMediaInfo_1_Button.setOnClickListener { viewModel.onGetGamesAndMediaInfo_1_Clicked() }
+        getGamesAndMediaInfo_2_Button.setOnClickListener { viewModel.onGetGamesAndMediaInfo_2_Clicked() }
+        getGamesAndMediaInfo_3_Button.setOnClickListener { viewModel.onGetGamesAndMediaInfo_3_Clicked() }
+        getGamesAndMediaInfo_4_Button.setOnClickListener { viewModel.onGetGamesAndMediaInfo_4_Clicked() }
     }
 
 }

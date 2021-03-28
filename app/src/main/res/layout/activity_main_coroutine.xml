@@ -83,19 +83,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Get Games in Server Order"
-        app:layout_constraintBottom_toTopOf="@id/getGamesAndMediaInfoButton"
+        app:layout_constraintBottom_toTopOf="@id/getGamesAndMediaInfo_1_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/getGamesBySpecificReleaseYearButton" />
 
     <Button
-        android:id="@+id/getGamesAndMediaInfoButton"
+        android:id="@+id/getGamesAndMediaInfo_1_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Get Games and Media Info"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Get Games and Media Info 1"
+        app:layout_constraintBottom_toTopOf="@+id/getGamesAndMediaInfo_2_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/getGamesInServerOrderButton" />
+
+    <Button
+        android:id="@+id/getGamesAndMediaInfo_2_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games and Media Info 2"
+        app:layout_constraintBottom_toTopOf="@+id/getGamesAndMediaInfo_3_Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesAndMediaInfo_1_Button" />
+
+    <Button
+        android:id="@+id/getGamesAndMediaInfo_3_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games and Media Info 3"
+        app:layout_constraintBottom_toTopOf="@+id/getGamesAndMediaInfo_4_Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesAndMediaInfo_2_Button" />
+
+    <Button
+        android:id="@+id/getGamesAndMediaInfo_4_Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games and Media Info 4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesAndMediaInfo_3_Button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

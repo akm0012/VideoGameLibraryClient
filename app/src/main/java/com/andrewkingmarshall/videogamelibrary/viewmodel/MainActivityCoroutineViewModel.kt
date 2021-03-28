@@ -65,8 +65,53 @@ class MainActivityCoroutineViewModel @ViewModelInject constructor(
         showError.value = "onGetGamesInServerOrderClicked"
     }
 
-    fun onGetGamesAndMediaInfoClicked() {
-        showError.value = "onGetGamesAndMediaInfoClicked"
+    fun onGetGamesAndMediaInfo_1_Clicked() {
+        Timber.tag("GameTag").d("Starting to get all games and media")
+        networkCallStartTime = System.currentTimeMillis()
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllGamesWithMedia()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
     }
+
+    fun onGetGamesAndMediaInfo_2_Clicked() {
+        Timber.tag("GameTag").d("Starting to get all games and media")
+        networkCallStartTime = System.currentTimeMillis()
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllGamesWithMediaAsyncOptimized_1()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
+    }
+
+    fun onGetGamesAndMediaInfo_3_Clicked() {
+        Timber.tag("GameTag").d("Starting to get all games and media")
+        networkCallStartTime = System.currentTimeMillis()
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllGamesWithMediaAsyncOptimized_2()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
+    }
+
+    fun onGetGamesAndMediaInfo_4_Clicked() {
+        Timber.tag("GameTag").d("Starting to get all games and media")
+        networkCallStartTime = System.currentTimeMillis()
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllGamesWithMediaAsyncOptimized_3()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
+    }
+
 
 }
