@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.MainActivity">
+
+    <Button
+        android:id="@+id/clearRealmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clear Realm"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/updateGamesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/updateGamesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Game Data"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clearRealmButton" />
+
+    <Button
+        android:id="@+id/getAllGamesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get All Games"
+        app:layout_constraintBottom_toTopOf="@id/getMultiPlayerGamesButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/updateGamesButton" />
+
+    <Button
+        android:id="@+id/getMultiPlayerGamesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get MultiPlayer Games"
+        app:layout_constraintBottom_toTopOf="@id/getGamesSortedAlphaButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/getAllGamesButton" />
+
+    <Button
+        android:id="@+id/getGamesSortedAlphaButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games sorted Alphabetically"
+        app:layout_constraintBottom_toTopOf="@id/getGamesBySpecificDeveloperButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getMultiPlayerGamesButton" />
+
+    <Button
+        android:id="@+id/getGamesBySpecificDeveloperButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games by specific developer"
+        app:layout_constraintBottom_toTopOf="@id/getGamesBySpecificReleaseYearButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesSortedAlphaButton" />
+
+    <Button
+        android:id="@+id/getGamesBySpecificReleaseYearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games by specific release year"
+        app:layout_constraintBottom_toTopOf="@id/getGamesInServerOrderButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesBySpecificDeveloperButton" />
+
+    <Button
+        android:id="@+id/getGamesInServerOrderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games in Server Order"
+        app:layout_constraintBottom_toTopOf="@id/getGamesAndMediaInfoButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesBySpecificReleaseYearButton" />
+
+    <Button
+        android:id="@+id/getGamesAndMediaInfoButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Games and Media Info"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/getGamesInServerOrderButton" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
