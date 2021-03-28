@@ -22,4 +22,12 @@ interface ApiServiceInterface {
     @GET("VideoGame/Media/{gameId}")
     fun getVideoGameMedia(@Path(GAME_ID) gameId: Int): Observable<MediaDto>
 
+    @GET("VideoGame/ids")
+    suspend fun getVideoGameIdsSuspend(): VideoGameIdListDto
+
+    @GET("VideoGame/{gameId}")
+    suspend fun getVideoGameSuspend(@Path(GAME_ID) gameId: Int): VideoGameDto
+
+    @GET("VideoGame/Media/{gameId}")
+    suspend fun getVideoGameMediaSuspend(@Path(GAME_ID) gameId: Int): MediaDto
 }

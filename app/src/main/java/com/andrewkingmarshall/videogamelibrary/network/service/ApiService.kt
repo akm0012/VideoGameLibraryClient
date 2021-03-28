@@ -9,8 +9,9 @@ import javax.inject.Inject
 
 class ApiService @Inject constructor(retrofit: Retrofit) {
 
-    private var apiServiceInterface: ApiServiceInterface =
+    private val apiServiceInterface: ApiServiceInterface by lazy {
         retrofit.create(ApiServiceInterface::class.java)
+    }
 
     fun getVideoGameIds(): Observable<VideoGameIdListDto> {
         return apiServiceInterface.getVideoGameIds()
@@ -24,4 +25,15 @@ class ApiService @Inject constructor(retrofit: Retrofit) {
         return apiServiceInterface.getVideoGameMedia(gameId)
     }
 
+    suspend fun getVideoGameIdsSuspend(): VideoGameIdListDto {
+        return apiServiceInterface.getVideoGameIdsSuspend()
+    }
+
+    suspend fun getVideoGameSuspend(gameId: Int): VideoGameDto {
+        return apiServiceInterface.getVideoGameSuspend(gameId)
+    }
+
+    suspend fun getVideoGameMediaSuspend(gameId: Int): MediaDto {
+        return apiServiceInterface.getVideoGameMediaSuspend(gameId)
+    }
 }

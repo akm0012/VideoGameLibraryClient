@@ -1,22 +1,31 @@
 package com.andrewkingmarshall.videogamelibrary.viewmodel
 
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
+import androidx.lifecycle.viewModelScope
+import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
+import com.andrewkingmarshall.videogamelibrary.repository.GameRefreshError
+import com.andrewkingmarshall.videogamelibrary.repository.VideoGameCoroutineRepository
 import com.andrewkingmarshall.videogamelibrary.util.SingleLiveEvent
+import kotlinx.coroutines.launch
 
 class MainActivityCoroutineViewModel @ViewModelInject constructor(
-
+    private val repository: VideoGameCoroutineRepository
 ): ViewModel() {
 
     val showError = SingleLiveEvent<String>()
 
-    val gameLiveData = MutableLiveData<List<VideoGame>>()
+    val gameLiveData = MutableLiveData<List<VideoGameDto>>()
 
     fun onGetAllGamesClicked() {
-        showError.value = "onGetAllGamesClicked"
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllVideoGames()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
     }
 
     fun onGetMultiplayerGamesClicked() {
