@@ -9,16 +9,33 @@ import com.andrewkingmarshall.videogamelibrary.repository.GameRefreshError
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameCoroutineRepository
 import com.andrewkingmarshall.videogamelibrary.util.SingleLiveEvent
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivityCoroutineViewModel @ViewModelInject constructor(
     private val repository: VideoGameCoroutineRepository
-): ViewModel() {
+) : ViewModel() {
 
     val showError = SingleLiveEvent<String>()
 
     val gameLiveData = MutableLiveData<List<VideoGameDto>>()
 
+    var networkCallStartTime = 0L
+
+    fun onGetAllGamesOnParallelThreadClicked() {
+        Timber.tag("GameTag").d("Starting to get all games in parallel")
+        networkCallStartTime = System.currentTimeMillis()
+        viewModelScope.launch {
+            try {
+                gameLiveData.value = repository.getAllVideoGamesAsync()
+            } catch (error: GameRefreshError) {
+                showError.value = error.message
+            }
+        }
+    }
+
     fun onGetAllGamesClicked() {
+        Timber.tag("GameTag").d("Starting to get all games")
+        networkCallStartTime = System.currentTimeMillis()
         viewModelScope.launch {
             try {
                 gameLiveData.value = repository.getAllVideoGames()

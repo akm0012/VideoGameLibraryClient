@@ -33,8 +33,11 @@ class MainActivityCoroutine : AppCompatActivity() {
             gameList.forEach {
                 Timber.tag("GameTag").i("$it")
             }
+
+            Timber.tag("GameTag").d("Time taken: ${System.currentTimeMillis() - viewModel.networkCallStartTime} ms")
         })
 
+        getAllGamesParallelButton.setOnClickListener { viewModel.onGetAllGamesOnParallelThreadClicked() }
         getAllGamesButton.setOnClickListener { viewModel.onGetAllGamesClicked() }
         getMultiPlayerGamesButton.setOnClickListener { viewModel.onGetMultiplayerGamesClicked() }
         getGamesSortedAlphaButton.setOnClickListener { viewModel.onGetGamesSortedAlphabeticallyClicked() }

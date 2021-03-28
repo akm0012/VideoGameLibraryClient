@@ -12,17 +12,17 @@
         android:layout_height="wrap_content"
         android:text="Clear Realm"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/updateGamesButton"
+        app:layout_constraintBottom_toTopOf="@id/getAllGamesParallelButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/updateGamesButton"
+        android:id="@+id/getAllGamesParallelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Update Game Data"
-        android:visibility="gone"
+        android:text="Get All Games on parallel threads"
+        android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,7 @@
         app:layout_constraintBottom_toTopOf="@id/getMultiPlayerGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/updateGamesButton" />
+        app:layout_constraintTop_toBottomOf="@id/getAllGamesParallelButton" />
 
     <Button
         android:id="@+id/getMultiPlayerGamesButton"
