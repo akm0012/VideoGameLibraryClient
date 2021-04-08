@@ -1,15 +1,17 @@
 package com.andrewkingmarshall.videogamelibrary.inject
 
 import android.content.Context
+import androidx.room.Room
 import com.andrewkingmarshall.videogamelibrary.BuildConfig
 import com.andrewkingmarshall.videogamelibrary.R
+import com.andrewkingmarshall.videogamelibrary.database.AppDatabase
+import com.andrewkingmarshall.videogamelibrary.database.VideoGameDao
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
-import dagger.hilt.android.components.ApplicationComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -18,7 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(ApplicationComponent::class)
+@InstallIn(SingletonComponent::class)
 class NetworkModule {
 
     @Provides

@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">VideoGameLibrary</string>
 
-<!--  To Connect to local host server use,  "http://localhost:30092" here, then set phone proxy to go through Charles -->
+    <!--  To Connect to local host server use,  "http://localhost:30092" here, then set phone proxy to go through Charles -->
     <string name="base_endpoint" translatable="false">http://localhost:30092</string>
+    <string name="title_activity_main_room">MainActivityRoom</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
 </resources>

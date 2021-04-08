@@ -12,6 +12,9 @@ class VideoGameCoroutineRepository @Inject constructor(
     private val apiService: ApiService
 ) {
 
+    /**
+     * This gets the Ids, then will async grab all the games on different threads.
+     */
     suspend fun getAllVideoGamesAsync(): List<VideoGameDto> {
 
         var videoGames: List<VideoGameDto>
@@ -36,6 +39,10 @@ class VideoGameCoroutineRepository @Inject constructor(
         return videoGames
     }
 
+    /**
+     * This gets the Ids, then gets each game in order. This is the worst performing way to do this
+     * as you wait for each call to be done before you start the next one.
+     */
     suspend fun getAllVideoGames(): List<VideoGameDto> {
         try {
             // Get all the game Ids
@@ -170,8 +177,6 @@ class VideoGameCoroutineRepository @Inject constructor(
 
         return videoGames
     }
-
-
 }
 
 class GameRefreshError(message: String, cause: Throwable?) : Throwable(message, cause)
