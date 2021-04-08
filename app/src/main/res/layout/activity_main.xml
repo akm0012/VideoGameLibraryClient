@@ -7,10 +7,10 @@
     tools:context=".ui.MainActivity">
 
     <Button
-        android:id="@+id/clearRealmButton"
+        android:id="@+id/clearDbButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Clear Realm"
+        android:text="Clear DB"
         app:layout_constraintBottom_toTopOf="@id/updateGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toTopOf="@id/getAllGamesButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clearRealmButton" />
+        app:layout_constraintTop_toBottomOf="@id/clearDbButton" />
 
     <Button
         android:id="@+id/getAllGamesButton"

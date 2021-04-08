@@ -2,29 +2,23 @@ package com.andrewkingmarshall.videogamelibrary.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
 import com.andrewkingmarshall.videogamelibrary.extensions.toast
-import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
-import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModel
+import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModelRx
 import com.jakewharton.rxbinding2.view.RxView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 @AndroidEntryPoint
 @SuppressLint("CheckResult")
 class MainActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var apiService: ApiService
-
-    lateinit var viewModel: MainActivityViewModel
+    lateinit var viewModelRx: MainActivityViewModelRx
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,16 +30,16 @@ class MainActivity : AppCompatActivity() {
 
     private fun init() {
 
-        viewModel =
-            ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModelRx =
+            ViewModelProvider(this).get(MainActivityViewModelRx::class.java)
 
         // Listen for Errors
-        viewModel.showError.observe(this, {
+        viewModelRx.showError.observe(this, {
             it.toast(this)
         })
 
         // Listen for the Game Data to change
-        viewModel.videoGameLiveData.observe(this, { gameList ->
+        viewModelRx.videoGameLiveData.observe(this, { gameList ->
             Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
             if (gameList == null || gameList.isEmpty()) {
@@ -57,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        viewModel.videoGameRealmLiveData.observe(this, { gameList ->
+        viewModelRx.videoGameRealmLiveData.observe(this, { gameList ->
             Toast.makeText(this, "New Realm Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
             if (gameList == null || gameList.isEmpty()) {
@@ -69,55 +63,53 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        clearRealmButton.setOnClickListener { viewModel.clearRealmClicked() }
-
         // Listen for button clicks with a 1 second delay so we don't spam the server
         RxView.clicks(updateGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onUpdateGameButtonClicked()
+                viewModelRx.onUpdateGameButtonClicked()
             }
 
         RxView.clicks(getAllGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetAllGamesClicked()
+                viewModelRx.onGetAllGamesClicked()
             }
 
         RxView.clicks(getMultiPlayerGamesButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetMultiPlayerGamesClicked()
+                viewModelRx.onGetMultiPlayerGamesClicked()
             }
 
         RxView.clicks(getGamesSortedAlphaButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesSortedAlphabeticallyClicked()
+                viewModelRx.onGetGamesSortedAlphabeticallyClicked()
             }
 
         RxView.clicks(getGamesBySpecificDeveloperButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesBySpecificDeveloperClicked("Nintendo")
+                viewModelRx.onGetGamesBySpecificDeveloperClicked("Nintendo")
             }
 
         RxView.clicks(getGamesBySpecificReleaseYearButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesBySpecificReleaseYearClicked("2012")
+                viewModelRx.onGetGamesBySpecificReleaseYearClicked("2012")
             }
 
         RxView.clicks(getGamesInServerOrderButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesInServerOrderClicked()
+                viewModelRx.onGetGamesInServerOrderClicked()
             }
 
         RxView.clicks(getGamesAndMediaInfoButton)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
-                viewModel.onGetGamesAndMediaInfoClicked()
+                viewModelRx.onGetGamesAndMediaInfoClicked()
             }
     }
 }

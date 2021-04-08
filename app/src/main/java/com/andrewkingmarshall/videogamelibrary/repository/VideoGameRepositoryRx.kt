@@ -1,25 +1,19 @@
 package com.andrewkingmarshall.videogamelibrary.repository
 
 import android.annotation.SuppressLint
-import com.andrewkingmarshall.videogamelibrary.database.realmObjects.VideoGame
-import com.andrewkingmarshall.videogamelibrary.extensions.save
-import com.andrewkingmarshall.videogamelibrary.extensions.saveAsync
-import com.andrewkingmarshall.videogamelibrary.extensions.saveRx
+import com.andrewkingmarshall.videogamelibrary.database.models.VideoGame
 import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
-import io.reactivex.Flowable
 import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import io.reactivex.schedulers.Schedulers
-import io.realm.Realm
 import timber.log.Timber
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class VideoGameRepository @Inject constructor(
+class VideoGameRepositoryRx @Inject constructor(
     private val apiService: ApiService
     // Todo: Pass in observable property to refresh data, then you can trottle it so you only get new api data every 5 min
 ) {
@@ -28,23 +22,23 @@ class VideoGameRepository @Inject constructor(
         fun onError(e: Throwable)
     }
 
-    fun getAllVideoGamesSavedInRealm(
-        realm: Realm,
-        errorListener: ErrorListener? = null
-    ): Flowable<List<VideoGame>> {
-
-//        refreshGameLibrary(errorListener)
-
-        // todo create data wrapper object
-        // todo: Find a way to combine the data stream from refreshGameLibrary so you could emit errors here
-
-        return realm.where(VideoGame::class.java)
-            .sort("id")
-            .findAllAsync()
-            .asFlowable()
-            .filter { it.isLoaded }
-            .map { realm.copyFromRealm(it) }
-    }
+//    fun getAllVideoGamesSavedInRealm(
+//        realm: Realm,
+//        errorListener: ErrorListener? = null
+//    ): Flowable<List<VideoGame>> {
+//
+////        refreshGameLibrary(errorListener)
+//
+//        // todo create data wrapper object
+//        // todo: Find a way to combine the data stream from refreshGameLibrary so you could emit errors here
+//
+//        return realm.where(VideoGame::class.java)
+//            .sort("id")
+//            .findAllAsync()
+//            .asFlowable()
+//            .filter { it.isLoaded }
+//            .map { realm.copyFromRealm(it) }
+//    }
 
     @SuppressLint("CheckResult")
     fun refreshGameLibrary(errorListener: ErrorListener? = null) {
@@ -67,7 +61,7 @@ class VideoGameRepository @Inject constructor(
                     })
             }
             .toList() // Turn marbles into a list
-            .map { it.save() } // Save Video Games to Realm
+//            .map { it.save() } // Save Video Games to Realm
             .subscribeOn(Schedulers.io()) // Do this work on a background IO thread
             .subscribe(
                 { Timber.d("Video Games refreshed! It took ${System.currentTimeMillis() - updateStartTime} millis") }, // Log when things work

@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
 import com.andrewkingmarshall.videogamelibrary.extensions.toast
 import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityCoroutineViewModel
-import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main_coroutine.*
 import timber.log.Timber

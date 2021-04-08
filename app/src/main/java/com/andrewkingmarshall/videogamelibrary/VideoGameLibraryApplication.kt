@@ -1,7 +1,6 @@
 package com.andrewkingmarshall.videogamelibrary
 
 import android.app.Application
-import com.andrewkingmarshall.videogamelibrary.database.initRealm
 import dagger.hilt.android.HiltAndroidApp
 import net.danlew.android.joda.JodaTimeAndroid
 import timber.log.Timber
@@ -14,17 +13,11 @@ class VideoGameLibraryApplication  : Application() {
 
         setUpJodaTime()
 
-        setUpRealm()
-
         setUpLogging()
     }
 
     private fun setUpJodaTime() {
         JodaTimeAndroid.init(this)
-    }
-
-    private fun setUpRealm() {
-        initRealm(this)
     }
 
     private fun setUpLogging() {

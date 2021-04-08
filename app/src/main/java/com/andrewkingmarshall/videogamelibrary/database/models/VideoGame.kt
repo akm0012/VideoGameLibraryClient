@@ -1,11 +1,12 @@
-package com.andrewkingmarshall.videogamelibrary.database.realmObjects
+package com.andrewkingmarshall.videogamelibrary.database.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
-import io.realm.RealmObject
-import io.realm.annotations.PrimaryKey
 
-open class VideoGame(
+@Entity
+data class VideoGame(
 
     @PrimaryKey
     var id: Int = 0,
@@ -24,7 +25,7 @@ open class VideoGame(
 
     var gameTrailerUrl: String = ""
 
-) : RealmObject() {
+) {
 
     constructor(
         videoGameDto: VideoGameDto,
@@ -47,10 +48,4 @@ open class VideoGame(
             gameTrailerUrl = videoGameDto.mediaInfo?.gameTrailerUrl ?: ""
         }
     }
-
-    override fun toString(): String {
-        return "VideoGame(id=$id, name='$name', description='$description', isMultiPlayer=$isMultiPlayer, dateReleased='$dateReleased', developerStudio='$developerStudio', gamePosterUrl='$gamePosterUrl', gameTrailerUrl='$gameTrailerUrl')"
-    }
-
-
 }
