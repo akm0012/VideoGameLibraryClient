@@ -6,6 +6,7 @@ import com.andrewkingmarshall.videogamelibrary.network.dtos.MediaDto
 import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.network.service.ApiService
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,15 +14,39 @@ import javax.inject.Singleton
 class VideoGameRepositoryRoom @Inject constructor(
     private val apiService: ApiService,
     private val videoGameDao: VideoGameDao,
-){
+) {
 
+    val videoGameFlow: Flow<List<VideoGame>>
+        get() = videoGameDao.getAllVideoGames()
 
+//    val videoGameFlow = videoGameDao.getAllVideoGames()
+
+//    fun getAllVideoGames(): Flow<List<VideoGame>> {
+//        refreshVideoGameData()
+
+//        return videoGameDao.getAllVideoGames()
+//    }
+
+    suspend fun saveRandomGame() {
+
+        withContext(Dispatchers.IO) {
+
+            videoGameDao.insertVideoGame(
+                VideoGame(
+                    id = (1..10_0000).shuffled().first(),
+                    name = "A video Game with a new ID",
+                    description = "A Description"
+                )
+            )
+
+        }
+    }
 
     /**
      * This will pull down all the Ids, then simultaneously pull down all the VideoGameDtos and MediaDtos
      * so we can completely refresh the database.
      */
-    private suspend fun refreshVideoGameData() {
+    suspend fun refreshVideoGameData() {
 
         withContext(Dispatchers.IO) {
 
@@ -41,11 +66,16 @@ class VideoGameRepositoryRoom @Inject constructor(
                 val gameList = deferredGameList.awaitAll()
                 val mediaList = deferredMediaList.awaitAll()
 
+                val gamesToSave = ArrayList<VideoGame>()
+
                 // Once we get all the Game and Media Dtos, go through the games and look for a matching Media
-                gameList.forEach {gameDto ->
+                gameList.forEach { gameDto ->
                     gameDto.mediaInfo = mediaList.firstOrNull { it.gameId == gameDto.id }
-                    videoGameDao.insertVideoGame(VideoGame(gameDto))
+//                    videoGameDao.insertVideoGame(VideoGame(gameDto))
+                    gamesToSave.add(VideoGame(gameDto))
                 }
+
+                videoGameDao.insertVideoGames(gamesToSave)
 
             } catch (cause: Exception) {
                 throw GameRefreshError("Unable to refresh games", cause)

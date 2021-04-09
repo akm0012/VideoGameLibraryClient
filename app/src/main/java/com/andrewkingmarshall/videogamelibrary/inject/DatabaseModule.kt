@@ -20,7 +20,7 @@ class DatabaseModule {
     fun provideAppDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
-            AppDatabase::class.java, "database-name"
+            AppDatabase::class.java, "VideoGame-Database"
         ).build()
     }
 

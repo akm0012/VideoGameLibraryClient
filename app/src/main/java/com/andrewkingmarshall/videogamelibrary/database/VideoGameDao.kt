@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface VideoGameDao {
 
-    @Query("SELECT * FROM videogame")
+    @Query("SELECT * FROM VideoGame")
     fun getAllVideoGames(): Flow<List<VideoGame>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
