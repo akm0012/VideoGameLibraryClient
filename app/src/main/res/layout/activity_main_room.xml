@@ -48,6 +48,18 @@
             android:layout_height="wrap_content"
             android:text="Get Games in Server Order" />
 
+        <Button
+            android:id="@+id/insertRandomGame"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Insert Random Game" />
+
+        <Button
+            android:id="@+id/deleteAllGames"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete All Games" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

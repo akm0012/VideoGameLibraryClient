@@ -19,13 +19,6 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivityRoom : AppCompatActivity() {
 
-    val db by lazy {
-        Room.databaseBuilder(
-            applicationContext,
-            AppDatabase::class.java, "VideoGame-Database"
-        ).build()
-    }
-
     lateinit var viewModel: MainActivityRoomViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,11 +33,11 @@ class MainActivityRoom : AppCompatActivity() {
             Toast.makeText(this, "New Game List in LogCat!", Toast.LENGTH_SHORT).show()
 
             if (gameList.isNullOrEmpty()) {
-                Timber.tag("GameTag").d("[]")
+                Timber.tag("GameTag").d("One shot: []")
             }
 
             gameList.forEach {
-                Timber.tag("GameTag").d("$it")
+                Timber.tag("GameTag").d("One shot: $it")
             }
         })
 
@@ -64,19 +57,10 @@ class MainActivityRoom : AppCompatActivity() {
         getMultiPlayerGamesButton.setOnClickListener { viewModel.onGetMultiplayerGamesClicked() }
         getGamesSortedAlphaButton.setOnClickListener { viewModel.onGetGamesSortedAlphabeticallyClicked() }
         getGamesBySpecificDeveloperButton.setOnClickListener { viewModel.onGetGamesBySpecificDeveloperClicked() }
-        getGamesBySpecificReleaseYearButton.setOnClickListener { viewModel.onGetGamesBySpecificReleaseYearClicked() }
-//        getGamesInServerOrderButton.setOnClickListener { viewModel.onGetGamesInServerOrderClicked() }
-        getGamesInServerOrderButton.setOnClickListener {
+        getGamesBySpecificReleaseYearButton.setOnClickListener { viewModel.onGetGamesBySpecificReleaseYearClicked(2012) }
+        getGamesInServerOrderButton.setOnClickListener { viewModel.onGetGamesInServerOrderClicked() }
 
-            lifecycleScope.launch {
-                db.videoGameDao().insertVideoGame(
-                    VideoGame(
-                        id = (1..10_0000).shuffled().first(),
-                        name = "A video Game with a new ID",
-                        description = "A Description"
-                    )
-                )
-            }
-        }
+        insertRandomGame.setOnClickListener { viewModel.onInsertRandomGameClicked() }
+        deleteAllGames.setOnClickListener { viewModel.onDeleteAllGamesClicked() }
     }
 }
