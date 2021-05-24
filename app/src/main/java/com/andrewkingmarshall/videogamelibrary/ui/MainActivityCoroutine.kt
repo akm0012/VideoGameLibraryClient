@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.andrewkingmarshall.videogamelibrary.R
 import com.andrewkingmarshall.videogamelibrary.extensions.toast
 import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityCoroutineViewModel
+import com.andrewkingmarshall.videogamelibrary.viewmodel.MainActivityRoomViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.activity_main_coroutine.*
 import timber.log.Timber
@@ -14,11 +15,13 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivityCoroutine : AppCompatActivity() {
 
-    private val viewModel by lazy { ViewModelProvider(this).get(MainActivityCoroutineViewModel::class.java) }
+    lateinit var viewModel: MainActivityCoroutineViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_coroutine)
+
+        viewModel = ViewModelProvider(this).get(MainActivityCoroutineViewModel::class.java)
 
         viewModel.showError.observe(this, { it.toast(this) })
 

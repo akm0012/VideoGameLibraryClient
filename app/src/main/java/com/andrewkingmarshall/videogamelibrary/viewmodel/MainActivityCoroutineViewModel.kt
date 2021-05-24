@@ -1,6 +1,5 @@
 package com.andrewkingmarshall.videogamelibrary.viewmodel
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,10 +7,14 @@ import com.andrewkingmarshall.videogamelibrary.network.dtos.VideoGameDto
 import com.andrewkingmarshall.videogamelibrary.repository.GameRefreshError
 import com.andrewkingmarshall.videogamelibrary.repository.VideoGameCoroutineRepository
 import com.andrewkingmarshall.videogamelibrary.util.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-class MainActivityCoroutineViewModel @ViewModelInject constructor(
+@HiltViewModel
+class MainActivityCoroutineViewModel @Inject constructor(
     private val repository: VideoGameCoroutineRepository
 ) : ViewModel() {
 
